@@ -34,7 +34,7 @@ CREATE VIEW "InscriptionFact" AS
 
 CREATE VIEW "SerieJoueurPresenceFact" AS
 WITH nombreMatchsJoueur AS
-(   SELECT "Joueur"."noJoueur" AS IDJOUEUR, "nom", "prenom", COUNT("noMatch") as NombreMatchs,"matricule","sexe","courriel"
+(   SELECT "Joueur"."noJoueur" AS IDJOUEUR, "nom", "prenom","matricule","sexe","courriel", COUNT("noMatch") as NombreMatchs
     FROM "Joueur"
     LEFT JOIN "Presence" P on "Joueur"."noJoueur" = P."noJoueur"
     GROUP BY IDJOUEUR
@@ -46,7 +46,7 @@ WHERE NombreMatchs >= 5
 
 CREATE VIEW "SerieRemplacantPresenceFact" AS
 WITH nombreMatchsRemplacant AS
-(   SELECT "Joueur"."noJoueur" AS IDJOUEUR, "nom" , "prenom", COUNT("noMatch") as NombreMatchs,"matricule","sexe","courriel"
+(   SELECT "Joueur"."noJoueur" AS IDJOUEUR, "nom" , "prenom" ,"matricule","sexe","courriel", COUNT("noMatch") as NombreMatchs
     FROM "Joueur"
     LEFT JOIN "Remplace" R on "Joueur"."noJoueur" = R."noJoueur"
     GROUP BY IDJOUEUR
