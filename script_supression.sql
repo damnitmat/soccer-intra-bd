@@ -21,6 +21,8 @@ DROP VIEW IF EXISTS "PaiementEquipeFact";
 DROP VIEW IF EXISTS "InscriptionFact";
 DROP VIEW IF EXISTS "SerieJoueurPresenceFact";
 DROP VIEW IF EXISTS "SerieRemplacantPresenceFact";
+DROP VIEW IF EXISTS "PresenceFact" CASCADE;
+DROP VIEW IF EXISTS "RemplacementFact" CASCADE;
 
 /*
  TYPES
