@@ -1,3 +1,7 @@
+/**********
+    Données importées du Jalon 2
+**********/
+
 INSERT INTO "Division"("nomDivision")
 VALUES ('AA'), ('A'), ('B'), ('C');
 
@@ -128,3 +132,7 @@ VALUES
      (select "noJoueur" from "Joueur" where nom='Bisson' and prenom='Zacharie'),
      (select "noMatch" from "MatchDeSoccer" where "dateMatch"='2021-10-10'))
     ;
+
+/**********
+    Données du Jalon 3
+**********/
