@@ -94,7 +94,7 @@ JOIN "MatchDeSoccer" MDS on MDS."noMatch" = R."noMatch"
 JOIN "TypeDeMatch" TDM on TDM."noType" = MDS."noType"
 ;
 
-CREATE VIEW EquipeIndisponibiliteFact AS
+CREATE VIEW "EquipeIndisponibiliteFact" AS
     SELECT "nomEquipe",
            "Equipe"."noIndisponibilite",
            "NomSaison"."nom" AS "nomSaison",
@@ -105,7 +105,7 @@ CREATE VIEW EquipeIndisponibiliteFact AS
     JOIN "NomSaison" on "NomSaison"."noNomSaison" = "Saison"."noNomSaison"
     JOIN "Division" on "Division"."noDivision" = "Equipe"."noDivision";
 
-CREATE VIEW HoraireMatchFact AS
+CREATE VIEW "HoraireMatchFact" AS
     SELECT "Equipe"."nomEquipe",
            "dateMatch",
            "TypeDeMatch"."nomType",
