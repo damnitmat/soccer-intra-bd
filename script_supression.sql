@@ -1,3 +1,6 @@
+/*
+ TABLES
+ */
 DROP TABLE IF EXISTS "Presence" CASCADE;
 DROP TABLE IF EXISTS "Division" CASCADE;
 DROP TABLE IF EXISTS "TypeDeMatch" CASCADE;
@@ -11,4 +14,15 @@ DROP TABLE IF EXISTS "Joueur" CASCADE;
 DROP TABLE IF EXISTS "Membre" CASCADE;
 DROP TABLE IF EXISTS "NomSaison" CASCADE;
 
+/*
+ VIEWS
+ */
+DROP VIEW IF EXISTS "PaiementEquipeFact";
+DROP VIEW IF EXISTS "InscriptionFact";
+DROP VIEW IF EXISTS "SerieJoueurPresenceFact";
+DROP VIEW IF EXISTS "SerieRemplacantPresenceFact";
+
+/*
+ TYPES
+ */
 DROP TYPE IF EXISTS uint2;

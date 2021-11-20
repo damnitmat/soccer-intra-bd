@@ -5,6 +5,9 @@
  - Vous pouvez utilsier un IDE comme DataGrip pour connecter la BD
  */
 
+/**********
+    TABLES
+ *********/
 CREATE TABLE "Division"(
     "noDivision" SERIAL,
     "nomDivision" VARCHAR(10) NOT NULL,
@@ -120,3 +123,62 @@ CREATE TABLE "Remplace"(
     FOREIGN KEY("noJoueur") REFERENCES "Joueur"("noJoueur"),
     FOREIGN KEY("noMatch") REFERENCES "MatchDeSoccer"("noMatch")
 );
+
+
+/**********
+    VIEWS
+ *********/
+CREATE VIEW "PaiementEquipeFact" AS
+    SELECT "nomEquipe",
+           "nomDivision",
+           NS."nom" AS "nomSaison",
+           "dateDebut" AS "debutSaison",
+           "dateFin" AS "finSaison",
+           "datePaiement",
+           "montant"
+    FROM "Equipe"
+    JOIN "Facture" ON "Equipe"."noEquipe" = "Facture"."noEquipe"
+    JOIN "Saison" ON "Equipe"."noSaison" = "Saison"."noSaison"
+    JOIN "NomSaison" NS ON NS."noNomSaison" = "Saison"."noNomSaison"
+    JOIN "Division" ON "Equipe"."noDivision" = "Division"."noDivision"
+;
+
+CREATE VIEW "InscriptionFact" AS
+    SELECT "matricule",
+           "prenom",
+           "Joueur"."nom" AS "nomJoueur",
+           "nomEquipe", NS."nom" AS "nomSaison",
+           "nomDivision",
+           "dateDebut" AS "debutSaison",
+           "dateFin" AS "finSaison"
+    FROM "Joueur"
+    JOIN "Equipe" ON "Joueur"."noJoueur" = "Equipe"."noCapitaine"
+    JOIN "Saison" ON "Equipe"."noSaison" = "Saison"."noSaison"
+    JOIN "NomSaison" NS ON NS."noNomSaison" = "Saison"."noNomSaison"
+    JOIN "Division" ON "Equipe"."noDivision" = "Division"."noDivision"
+;
+
+
+CREATE VIEW "SerieJoueurPresenceFact" AS
+WITH nombreMatchsJoueur AS
+(   SELECT "Joueur"."noJoueur" AS IDJOUEUR, "nom", "prenom", COUNT("noMatch") as NombreMatchs,"matricule","sexe","courriel"
+    FROM "Joueur"
+    LEFT JOIN "Presence" P on "Joueur"."noJoueur" = P."noJoueur"
+    GROUP BY IDJOUEUR
+)
+SELECT *
+FROM nombreMatchsJoueur
+WHERE NombreMatchs >= 5
+;
+
+CREATE VIEW "SerieRemplacantPresenceFact" AS
+WITH nombreMatchsRemplacant AS
+(   SELECT "Joueur"."noJoueur" AS IDJOUEUR, "nom" , "prenom", COUNT("noMatch") as NombreMatchs,"matricule","sexe","courriel"
+    FROM "Joueur"
+    LEFT JOIN "Remplace" R on "Joueur"."noJoueur" = R."noJoueur"
+    GROUP BY IDJOUEUR
+)
+SELECT *
+FROM nombreMatchsRemplacant
+WHERE NombreMatchs >= 5
+;
