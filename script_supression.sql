@@ -23,6 +23,12 @@ DROP VIEW IF EXISTS "SerieJoueurPresenceFact";
 DROP VIEW IF EXISTS "SerieRemplacantPresenceFact";
 DROP VIEW IF EXISTS "PresenceFact" CASCADE;
 DROP VIEW IF EXISTS "RemplacementFact" CASCADE;
+DROP VIEW IF EXISTS "MatchDeSoccerGagnantFact" CASCADE;
+DROP VIEW IF EXISTS "MatchDeSoccerPerdantFact" CASCADE;
+DROP VIEW IF EXISTS "StatistiqueEquipeFact" CASCADE;
+DROP VIEW IF EXISTS "VictoiresJoueurFact" CASCADE;
+DROP VIEW IF EXISTS "DefaitesJoueurFact" CASCADE;
+DROP VIEW IF EXISTS "StatistiqueJoueurFact" CASCADE;
 
 /*
  TYPES
