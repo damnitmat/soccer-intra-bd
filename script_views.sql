@@ -77,7 +77,8 @@ CREATE VIEW "PresenceFact" AS
 ;
 
 CREATE VIEW "RemplacementFact" AS
-    SELECT "prenom",
+    SELECT "Joueur"."matricule",
+           "prenom" AS "prenomJoueur",
            "Joueur"."nom" AS "nomJoueur",
            "dateMatch",
            "nomType",
