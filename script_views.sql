@@ -94,7 +94,6 @@ CREATE VIEW "RemplacementFact" AS
     JOIN "TypeDeMatch" TDM on TDM."noType" = MDS."noType"
 ;
 
-DROP VIEW "EquipeIndisponibiliteFact";
 CREATE VIEW "EquipeIndisponibiliteFact" AS
     SELECT "nomEquipe",
            "Indisponibilite"."dimanche" AS "dimanche",
@@ -112,7 +111,6 @@ CREATE VIEW "EquipeIndisponibiliteFact" AS
     JOIN "NomSaison" on "NomSaison"."noNomSaison" = "Saison"."noNomSaison"
     JOIN "Division" on "Division"."noDivision" = "Equipe"."noDivision";
 
-DROP VIEW "HoraireMatchFact";
 CREATE VIEW "HoraireMatchFact" AS
     SELECT "noEquipeJaune",
            "noEquipeVerte",
