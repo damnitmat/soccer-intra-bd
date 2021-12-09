@@ -31,6 +31,26 @@ DROP VIEW IF EXISTS "DefaitesJoueurFact" CASCADE;
 DROP VIEW IF EXISTS "StatistiqueJoueurFact" CASCADE;
 
 /*
+ FUNCTIONS
+*/
+DROP FUNCTION IF EXISTS "matchDeSoccer_copierOldDansHistorique" CASCADE;
+DROP FUNCTION IF EXISTS "matchDeSoccer_beforeUpdate" CASCADE;
+DROP FUNCTION IF EXISTS "equipe_copierOldDansHistorique" CASCADE;
+DROP FUNCTION IF EXISTS "equipe_beforeUpdate" CASCADE;
+DROP FUNCTION IF EXISTS "joueur_copierOldDansHistorique" CASCADE;
+DROP FUNCTION IF EXISTS "joueur_beforeUpdate" CASCADE;
+
+/*
+ TRIGGERS
+*/
+DROP TRIGGER IF EXISTS "MatchDeSoccer_beforeUpdate" ON "MatchDeSoccer";
+DROP TRIGGER IF EXISTS "MatchDeSoccer_afterUpdateOrDelete" ON "MatchDeSoccer";
+DROP TRIGGER IF EXISTS "Equipe_beforeUpdate" ON "Equipe";
+DROP TRIGGER IF EXISTS "Equipe_afterUpdateOrDelete" ON "Equipe";
+DROP TRIGGER IF EXISTS "Joueur_beforeUpdate" ON "Joueur";
+DROP TRIGGER IF EXISTS "Joueur_afterUpdateOrDelete" ON "Joueur";
+
+/*
  TYPES
  */
 DROP TYPE IF EXISTS uint2;
