@@ -500,4 +500,34 @@ VALUES
     ((select "noEquipe" from "Equipe" where "nomEquipe"='Atletico Granby'),
      (select "noJoueur" from "Joueur" where nom='Bisson' and prenom='Zacharie'),
      (select "noMatch" from "MatchDeSoccer" where "dateMatch"='2021-10-02'))
-    ;
+;
+
+/************************
+*************************
+    Données du Jalon 4
+*************************
+*************************/
+
+UPDATE "Equipe"
+SET "nomEquipe" = 'Atletico Granby F.C.'
+WHERE "nomEquipe" = 'Atletico Granby';
+
+UPDATE "Equipe"
+SET "nomEquipe" = 'FC Sherb Sporting'
+WHERE "nomEquipe" = 'FC Sherb';
+
+UPDATE "Equipe"
+SET "nomEquipe" = 'FC Sherb Sporting Club'
+WHERE "nomEquipe" = 'FC Sherb Sporting';
+
+UPDATE "Joueur"
+SET "nom" = 'Ruel-Laflamme'
+WHERE "nom" = 'Ruel';
+
+UPDATE "Joueur"
+SET "courriel" = 'zaka.reborn@gmail.com'
+WHERE "courriel" = 'zaka.the.goat155@gmail.com';
+
+UPDATE "MatchDeSoccer"
+SET "noType" = (select "noType" from "TypeDeMatch" where "nomType" = 'Finale')
+WHERE "dateMatch" = '2021-11-05' AND "noEquipeVerte" = (select "noEquipe" from "Equipe" where "nomEquipe" = 'Céréales Madrid');
