@@ -27,14 +27,14 @@ DROP FUNCTION IF EXISTS "joueur_beforeUpdate" CASCADE;
 /*
  TRIGGERS
 */
-DROP TRIGGER IF EXISTS "MatchDeSoccer_beforeUpdate" ON "MatchDeSoccer";
-DROP TRIGGER IF EXISTS "MatchDeSoccer_afterUpdateOrDelete" ON "MatchDeSoccer";
-DROP TRIGGER IF EXISTS "Equipe_beforeUpdate" ON "Equipe";
-DROP TRIGGER IF EXISTS "Equipe_afterUpdateOrDelete" ON "Equipe";
-DROP TRIGGER IF EXISTS "Joueur_beforeUpdate" ON "Joueur";
-DROP TRIGGER IF EXISTS "Joueur_afterUpdateOrDelete" ON "Joueur";
+DROP TRIGGER IF EXISTS "MatchDeSoccer_beforeUpdate" ON "MatchDeSoccer" CASCADE; 
+DROP TRIGGER IF EXISTS "MatchDeSoccer_afterUpdateOrDelete" ON "MatchDeSoccer" CASCADE;
+DROP TRIGGER IF EXISTS "Equipe_beforeUpdate" ON "Equipe" CASCADE;
+DROP TRIGGER IF EXISTS "Equipe_afterUpdateOrDelete" ON "Equipe" CASCADE;
+DROP TRIGGER IF EXISTS "Joueur_beforeUpdate" ON "Joueur" CASCADE;
+DROP TRIGGER IF EXISTS "Joueur_afterUpdateOrDelete" ON "Joueur" CASCADE;
 
 /*
  TYPES
  */
-DROP TYPE IF EXISTS uint2;
+DROP TYPE IF EXISTS uint2 CASCADE;
