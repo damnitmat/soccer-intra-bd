@@ -57,6 +57,12 @@ CREATE TABLE "Saison"(
     FOREIGN KEY("noNomSaison") REFERENCES "NomSaison"("noNomSaison")
 );
 
+/***************************************
+***************************************
+    HISTORISATION EQUIPE
+***************************************
+***************************************/
+
 CREATE TABLE "Equipe"(
     "noEquipe" SERIAL,
     "nomEquipe" VARCHAR(50) NOT NULL,
@@ -64,6 +70,7 @@ CREATE TABLE "Equipe"(
     "noDivision" INT NOT NULL,
     "noSaison" INT NOT NULL,
     "noCapitaine" INT NOT NULL,
+    "periode" TSTZRANGE DEFAULT tstzrange(current_timestamp, NULL),
     PRIMARY KEY("noEquipe"),
     FOREIGN KEY("noIndisponibilite") REFERENCES "Indisponibilite"("noIndisponibilite"),
     FOREIGN KEY("noDivision") REFERENCES "Division"("noDivision"),
@@ -71,11 +78,47 @@ CREATE TABLE "Equipe"(
     FOREIGN KEY("noCapitaine") REFERENCES "Joueur"("noJoueur")
 );
 
+CREATE TABLE "EquipeHistorique" AS TABLE "Equipe";
+
+CREATE OR REPLACE FUNCTION "equipe_copierOldDansHistorique"() RETURNS trigger AS $equipe_copierOldDansHistorique$
+    BEGIN
+        INSERT INTO "EquipeHistorique"("noEquipe", "nomEquipe", "noIndisponibilite", "noDivision", "noSaison", "noCapitaine", "periode")
+        VALUES (OLD."noEquipe", OLD."nomEquipe", OLD."noIndisponibilite", OLD."noDivision", OLD."noSaison", OLD."noCapitaine", tstzrange(lower(OLD.periode), current_timestamp));
+        RETURN NULL;
+    END
+$equipe_copierOldDansHistorique$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION "equipe_beforeUpdate"() RETURNS trigger AS $equipe_beforeUpdate$
+    BEGIN
+        NEW.periode = tstzrange(current_timestamp, NULL);
+        RETURN NEW;
+    END;
+$equipe_beforeUpdate$ LANGUAGE plpgsql;
+
+CREATE TRIGGER "Equipe_beforeUpdate"
+    BEFORE UPDATE ON "Equipe"
+    FOR EACH ROW
+    EXECUTE PROCEDURE "equipe_beforeUpdate"()
+;
+
+CREATE TRIGGER "Equipe_afterUpdateOrDelete"
+    AFTER UPDATE OR DELETE ON "Equipe"
+    FOR EACH ROW
+    EXECUTE PROCEDURE "equipe_copierOldDansHistorique"()
+;
+
+/***************************************
+***************************************
+    HISTORISATION MATCH DE SOCCER
+***************************************
+***************************************/
+
 /* on definit une representation d'un entier non signé */
 CREATE DOMAIN uint2 AS int4
-   CHECK(VALUE >= 0 AND VALUE < 65536);
+   CHECK(VALUE >= 0 AND VALUE < 65536)
+;
 
-CREATE TABLE "MatchDeSoccer"(
+CREATE TABLE "MatchDeSoccer" (
     "noMatch" SERIAL,
     "dateMatch" DATE,
     "scoreEquipeVerte" uint2 NOT NULL,
@@ -83,11 +126,46 @@ CREATE TABLE "MatchDeSoccer"(
     "noEquipeVerte" INT NOT NULL,
     "noEquipeJaune" INT NOT NULL,
     "noType" INT NOT NULL,
+    "periode" TSTZRANGE DEFAULT tstzrange(current_timestamp, NULL),
     PRIMARY KEY("noMatch"),
     FOREIGN KEY("noEquipeVerte") REFERENCES "Equipe"("noEquipe"),
     FOREIGN KEY("noEquipeJaune") REFERENCES "Equipe"("noEquipe"),
     FOREIGN KEY("noType") REFERENCES "TypeDeMatch"("noType")
 );
+
+CREATE TABLE "MatchDeSoccerHistorique" AS TABLE  "MatchDeSoccer";
+
+CREATE OR REPLACE FUNCTION "matchDeSoccer_copierOldDansHistorique"() RETURNS trigger AS $matchDeSoccer_copierOldDansHistorique$
+    BEGIN
+        INSERT INTO "MatchDeSoccerHistorique" ("noMatch", "dateMatch", "scoreEquipeVerte", "scoreEquipeJaune", "noEquipeVerte", "noEquipeJaune", "noType", "periode")
+        VALUES (OLD."noMatch", OLD."dateMatch", OLD."scoreEquipeVerte", OLD."scoreEquipeJaune", OLD."noEquipeVerte", OLD."noEquipeJaune", OLD."noType", tstzrange(lower(OLD.periode), current_timestamp));
+
+        RETURN NULL;
+    END;
+$matchDeSoccer_copierOldDansHistorique$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION "matchDeSoccer_beforeUpdate"() RETURNS trigger AS $matchDeSoccer_beforeUpdate$
+    BEGIN
+        NEW.periode = tstzrange(current_timestamp, NULL);
+        RETURN NEW;
+    END;
+$matchDeSoccer_beforeUpdate$ LANGUAGE plpgsql;
+
+CREATE TRIGGER "MatchDeSoccer_beforeUpdate"
+    BEFORE UPDATE ON "MatchDeSoccer"
+    FOR EACH ROW
+    EXECUTE PROCEDURE "matchDeSoccer_beforeUpdate"()
+;
+
+CREATE TRIGGER "MatchDeSoccer_afterUpdateOrDelete"
+    AFTER UPDATE OR DELETE ON "MatchDeSoccer"
+    FOR EACH ROW
+    EXECUTE PROCEDURE "matchDeSoccer_copierOldDansHistorique"()
+;
+
+/***************************************
+***************************************
+***************************************/
 
 CREATE TABLE "Facture"(
     "noFacture" SERIAL,
